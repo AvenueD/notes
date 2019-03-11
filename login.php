@@ -39,7 +39,7 @@
 
                 <a href="#"><small>Forgot password?</small></a>
                 <p class="text-muted text-center"><small>Do not have an account?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>
+                <a class="btn btn-sm btn-white btn-block" href="register.php">Create an account</a>
             </form>
         </div>
     </div>
