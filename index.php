@@ -1,3 +1,20 @@
+<?php
+session_start();
+ob_start();
+
+// mengatur batas login
+$timeout = $_SESSION['timeout'];
+if(time()<$timeout) {
+    $_SESSION['timeout'] = time()+5000;
+}else{
+    $_SESSION['login'] = 0;
+}
+
+// mengecek status login
+if(empty($_SESSION['username']) or empty($_SESSION['password']) or $_SESSION['login']==0) {
+    header('location: login.php');
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -32,7 +49,7 @@
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="#">Menu 1</a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Logout</a></li>
+                            <li><a href="logout.php">Logout</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
@@ -70,7 +87,7 @@
         </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                    <a href="login.html">
+                    <a href="logout.php">
                         <i class="fa fa-sign-out"></i> Log out
                     </a>
                 </li>
