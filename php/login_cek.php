@@ -19,7 +19,7 @@ if($jmluser > 0) {
     $_SESSION['login'] = 1;
     echo "ok";
 }else{
-    echo "<b>Username</b> atau <b>password</b> tidak terdaftar!";
+    echo "<b>Username</b> and <b>password</b> do not match!";
 }
 
 ?>
