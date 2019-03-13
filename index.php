@@ -2,6 +2,8 @@
 session_start();
 ob_start();
 
+include_once("php/config.php");
+
 // mengatur batas login
 $timeout = $_SESSION['timeout'];
 if(time()<$timeout) {
@@ -14,7 +16,12 @@ if(time()<$timeout) {
 if(empty($_SESSION['username']) or empty($_SESSION['password']) or $_SESSION['login']==0) {
     header('location: login.php');
 }
+
+//cek apakah ada URL yg diklik
+$page = isset($_GET['page']) ? $_GET['page'] : false;
+
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -28,46 +35,45 @@ if(empty($_SESSION['username']) or empty($_SESSION['password']) or $_SESSION['lo
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/notes.css" rel="stylesheet">
 
 </head>
 
 <body>
 
-    <div id="wrapper">
+    
+    <div id="wrapper"> 
 
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
-                    <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
-                             </span>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Username</strong>
-                             </span> <span class="text-muted text-xs block"><b class="caret"></b></span> </span> </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="#">Menu 1</a></li>
-                            <li class="divider"></li>
-                            <li><a href="logout.php">Logout</a></li>
-                        </ul>
+                    <div class="dropdown profile-element"> 
+                        <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
+                        <span class="block m-t-xs" style="color:white;"><strong class="font-bold">Username</strong></span>
                     </div>
                     <div class="logo-element">
                         Notes
                     </div>
                 </li>
                 <li>
-                    <a href="index.html"><i class="fa fa-book"></i> <span class="nav-label">Notes</span></a>
+                    <a <?php if($page == "main-page"){ echo "class='active'"; } ?> href="<?php echo $url_website."/index.php?page=main-page"; ?>"><i class="fa fa-book"></i> <span class="nav-label">Notes</span></a>
+                </li>
+                <hr>
+                <li>
+                    <a <?php if($page == "archive"){ echo "class='active'"; } ?> href="<?php echo $url_website."/index.php?page=archive"; ?>"><i class="fa fa-archive"></i> <span class="nav-label">Archive</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-archive"></i> <span class="nav-label">Archive</span></a>
+                    <a <?php if($page == "trash"){ echo "class='active'"; } ?> href="<?php echo $url_website."/index.php?page=trash"; ?>"><i class="fa fa-trash-o"></i> <span class="nav-label">Trash</span></a>
+                </li>
+                <hr>
+                <li>
+                    <a <?php if($page == "settings"){ echo "class='active'"; } ?> href="<?php echo $url_website."/index.php?page=settings"; ?>"><i class="fa fa-gears"></i> <span class="nav-label">Settings</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-trash-o"></i> <span class="nav-label">Trash</span></a>
-                </li>
-				<li class="divider"></li>
-                <li>
-                    <a href="#"><i class="fa fa-gears"></i> <span class="nav-label">Settings</span></a>
+                    <a href="logout.php"><i class="fa fa-sign-out"></i><span class="nav-label">Log out</span></a>
                 </li>
             </ul>
 
@@ -85,166 +91,21 @@ if(empty($_SESSION['username']) or empty($_SESSION['password']) or $_SESSION['lo
                 </div>
             </form>
         </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <a href="logout.php">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
-                </li>
-            </ul>
-
         </nav>
         </div>
 		
-		<div class="text-center">
-			<a data-toggle="modal" class="btn btn-info btn-lg" href="#modal-form"><span class="glyphicon glyphicon-plus"></span>Add notes</a>
-        </div>
-		
-		<div id="modal-form" class="modal fade" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <div class="row">
-											<h3 class="m-t-none m-b">Create new note...</h3>
+        <div id="content">
 
-                                                    <form role="form">
-                                                        <div class="form-group"><label>Title</label> <input type="text" placeholder="Title here" class="form-control"></div>
-                                                        <div class="form-group"><label>Notes</label> <textarea placeholder="Notes here" class="form-control"></textarea></div>
-														
-														<div class="fileinput fileinput-new" data-provides="fileinput">
-															<span class="btn btn-default btn-file"><input type="file" name="#"></span>
-															<span class="fileinput-filename"></span>
-														</div>
-														
-                                                        <div>
-                                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Save</strong></button>
-                                                        </div>
-                                                    </form>
-                                                
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-        </div>
-		
-        <div class="wrapper wrapper-content  animated fadeInRight">
-            <div class="row" id="sortable-view">
-                <div class="col-md-4">
-                    <div class="ibox ">
-                        <div class="ibox-title">
-                            <h5>Drag&amp;Drop</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <h2>
-                                This is simple box container
-                            </h2>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                            </p>
-                        </div>
-                    </div>
-                    <div class="ibox ">
-                        <div class="ibox-title">
-                            <h5>Drag&amp;Drop</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-wrench"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#">Config option 1</a>
-                                    </li>
-                                    <li><a href="#">Config option 2</a>
-                                    </li>
-                                </ul>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="ibox-content">
-                            <h2>
-                                This is simple box container
-                            </h2>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-                
-				<div class="col-md-4">
-                    <div class="ibox">
-                        <div class="ibox-title">
-                            <h5>Drag&amp;Drop</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <h2>
-                                This is simple box container
-                            </h2>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="ibox">
-                        <div class="ibox-title">
-                            <h5>Drag&amp;Drop</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <h2>
-                                This is simple box container
-                            </h2>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-				
-				<div class="col-md-4">
-                    <div class="ibox">
-                        <div class="ibox-title">
-                            <h5>Drag&amp;Drop</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <h2>
-                                This is simple box container
-                            </h2>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="ibox">
-                        <div class="ibox-title">
-                            <h5>Drag&amp;Drop</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <h2>
-                                This is simple box container
-                            </h2>
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-		
+            <?php 
+                $filename = "pages/$page.php";
+					
+                if(file_exists($filename)){
+                    include_once($filename);
+                }else{
+                    echo "<h3>Page does not exist.</h3>";
+                }
+            ?>
+		</diV>
         <div class="footer">
             <div>
                 <strong>Copyright</strong> Example Company &copy; 2019
@@ -270,6 +131,9 @@ if(empty($_SESSION['username']) or empty($_SESSION['password']) or $_SESSION['lo
     <script src="js/plugins/pace/pace.min.js"></script>
 
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <!-- iCheck -->
     <script src="js/plugins/iCheck/icheck.min.js"></script>
