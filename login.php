@@ -37,7 +37,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
 
-                <a href="#"><small>Forgot password?</small></a>
+                <a href="forgot_password.php"><small>Forgot password?</small></a>
                 <p class="text-muted text-center"><small>Do not have an account?</small></p>
                 <a class="btn btn-sm btn-white btn-block" href="register.php">Create an account</a>
             </form>
@@ -52,21 +52,23 @@
         $('.alert').hide();
         $('.m-t').submit(function(){
             $('.alert').hide();
+            /**             
             if($('input[name=username]').val() == "") {
                 $('.alert').fadeIn().html('Kotak input <b>Username</b> masih kosong!');
             }else if($('input[name=password]').val() == ""){
                 $('.alert').fadeIn().html('Kotak input <b>Password</b> masih kosong!');
             }else{
+            */
                 $.ajax({
                     type: "POST",
                     url: "php/login_cek.php",
                     data: $(this).serialize(),
                     success: function(data) {
-                        if(data == "ok") window.location = "index.php";
+                        if(data == "ok") window.location = "index.php?page=main-page";
                         else $('.alert').fadeIn().html(data);
                     }
                 });
-            }
+            //}
             return false;
         });
     });
