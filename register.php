@@ -35,7 +35,7 @@
                     <input type="text" class="form-control" name="username" placeholder="Username" required="">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="namalengkap" placeholder="Nama Lengkap" required="">
+                    <input type="text" class="form-control" name="namalengkap" placeholder="Fullname" required="">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="pass" placeholder="Password" required="">
@@ -52,9 +52,9 @@
                 <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
 
                 <p class="text-muted text-center"><small>Already have an account?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="login.html">Login</a>
+                <a class="btn btn-sm btn-white btn-block" href="login.php">Login</a>
             </form>
-            <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+            <p class="m-t"> <small>Notes &copy; 2019</small> </p>
         </div>
     </div>
 
@@ -77,7 +77,7 @@
         $('.alert').hide();
         $('.m-t').submit(function(){
             $('.alert').hide();
-            
+            /**
             if($('input[name=username]').val() == "") {
                 $('.alert').fadeIn().html('Kotak input <b>Username</b> masih kosong!');
             }else if($('input[name=email]').val() == "") {
@@ -91,6 +91,11 @@
             }else if($('input[name=passre]').val() != $('input[name=pass]').val()){
                     $('.alert').fadeIn().html('Password tidak sama!');
             }else{
+            */
+
+            if($('input[name=passre]').val() != $('input[name=pass]').val()){
+                    $('.alert').fadeIn().html('Password do not match!');
+            }else{
                 $.ajax({
                     type: "POST",
                     url: "php/register_cek.php",
@@ -100,7 +105,7 @@
                         else $('.alert').fadeIn().html(data);
                     },
                     error: function(){
-                        $('.alert').fadeIn().html('Register Gagal!');
+                        $('.alert').fadeIn().html('Registration Failed');
                     }
                 });
             }
