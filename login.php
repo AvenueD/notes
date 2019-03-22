@@ -28,7 +28,7 @@
 			<br/>
             <h3>Welcome to Notes</h3>
             <div class="alert alert-danger" role="alert"> </div>
-            <form class="m-t" role="form" action="index.html">
+            <form class="m-t" role="form" action="index.php">
                 <div class="form-group">
                     <input type="text" class="form-control" name="username" placeholder="Username" required="">
                 </div>

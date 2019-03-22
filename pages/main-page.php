@@ -1,34 +1,37 @@
+<?php 
+include_once("../php/config.php");
+include 'template/header.php'; 
+?>
 <div class="text-center" style="margin-top:10px;">
 			<a data-toggle="modal" class="btn btn-info btn-lg" href="#modal-form"><span class="glyphicon glyphicon-plus"></span>Add notes</a>
 </div>
-		
 <div id="modal-form" class="modal fade" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
                 <h3 class="m-t-none m-b">Create new note...</h3>
-                    <form role="form">
-                        <div class="form-group"><label>Title</label> <input type="text" placeholder="Title here" class="form-control"></div>
-                        <div class="form-group"><label>Notes</label> <textarea placeholder="Notes here" class="form-control" rows="5"></textarea></div>
-                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <form class="m-t" role="form" action="index.php">
+                        <div class="form-group"><label>Title</label> <input type="text" name="title" placeholder="Title here" class="form-control"></div>
+                        <div class="form-group"><label>Notes</label> <textarea placeholder="Notes here" name="notes" class="form-control" rows="5"></textarea></div>
+                        <!--<div class="fileinput fileinput-new" data-provides="fileinput">
                             <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span>
                             <span class="fileinput-exists">Change</span><input type="file" name="..."/></span>
                             <span class="fileinput-filename"></span>
                             <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
-                        </div> 
+                        </div>--> 
                         <hr>
                         <div>
-                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Save</strong></button>
+                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs sweetalert" type="submit"><strong>Save</strong></button>
                             <button class="btn btn-sm btn-primary m-t-n-xs" type="button" data-dismiss="modal"><strong>Close</strong></button>
-                        </div>
+                        </div> 
                     </form>    
                 </div>
             </div>
         </div>
     </div>
 </div>
-		
+
 <div class="wrapper wrapper-content  animated fadeInRight">
     <div class="row" id="sortable-view">
         <div class="col-md-4">
@@ -54,3 +57,41 @@
         </div>
     </div>
 </div>
+<?php include 'template/footer.php'; ?>
+<script type="text/javascript">
+    $(function(){
+       // $('.alert').hide();
+        $('.m-t').submit(function(){
+            $('.alert').hide();   
+            if($('input[name=title]').val() == "") {
+                //$('.alert').fadeIn().html('Kotak input <b>Title</b> masih kosong!');
+                $('.sweetalert').click(function(){
+                    swal({
+                        title: "Title Gak Boleh Kosong!",
+                        text: "Shut Up, take my money!",
+                        type: "error"
+                    });
+                });
+            }else if($('input[name=notes]').val() == ""){
+                $('.sweetalert').click(function(){
+                    swal({
+                        title: "Notes Gak Boleh Kosong!",
+                        text: "Shut Up, take my money!",
+                        type: "error"
+                    });
+                });
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "php/createnote.php",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        if(data == "ok") window.location = "index.php?page=main-page";
+                        else $('.alert').fadeIn().html(data);
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>

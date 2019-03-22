@@ -14,7 +14,7 @@ if($jmluser > 0) {
     $_SESSION['password'] = $data['password'];
     $_SESSION['iduser'] = $data['user_id'];
     $_SESSION['idrole'] = $data['role_id'];
-
+    $_SESSION['flagactive'] = $data['flag_active'];
     $_SESSION['timeout'] = time()+5000;
     $_SESSION['login'] = 1;
     echo "ok";
